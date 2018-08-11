@@ -12,8 +12,7 @@
           - apache2
           - apache2-utils
       when: deb_check.stdout.find('no packages found matching apache2') != 1
-      notify: start_apache2
-  handlers:
+
     - name: start_apache2
       service: name=apache2 state=started
 
