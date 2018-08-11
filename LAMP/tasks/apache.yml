@@ -21,14 +21,14 @@
       file: path=/etc/apache2/sites-enabled/default state=absent
 
     - name: Copy Apache config file
-      template: src=apache2.conf.j2 dest=/etc/apache2/sites-available/apache.com.conf
+      template: src=/etc/ansible/roles/LAMP/templates/apache2.conf.j2 dest=/etc/apache2/sites-available/apache.com.conf
 
     - name: enable site
       file: src=/etc/apache2/sites-available/apache.com.conf dest=/etc/apache2/sites-enabled/apache.com.conf state=link
 
     - name: copy files to be hosted
       path: /var/www/html state=directory
-      template: src=/etc/ansible/roles/LAMP/template/index.html.j2 dest=/var/www/html/index.html.j2
+      template: src=/etc/ansible/roles/LAMP/templates/index.html.j2 dest=/var/www/html/index.html.j2
       notify: restart_apache2
 
   handlers:
