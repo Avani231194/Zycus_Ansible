@@ -18,15 +18,17 @@
           - mysql_root_pass: root@123
 
     - name: Copy the root credentials as my.cnf file
-      template: src=/etc/ansible/roles/templates/my.cnf dest=/my.cnf mode=0600
+      template: src=/etc/ansible/roles/LAMP/templates/my.cnf dest=/my.cnf mode=0755
+      remote_src: yes
 
     - name: Ensure Anonymous user(s) are not in the database
       mysql_user: name='' host={{ item }} state=absent
       with_items:
           - root
-
-    - name: Remove the test database
-      mysql_db: name=test state=absent
-      notify:
-        - Restart MySQL
-
+    - name: Set password for root login
+      command: mysql -u root -e "UPDATE mysql.user SET Password=PASSWORD('password1234') WHERE User='root';";
+      args:
+        warn: false
+  handlers:
+    - name: Restart MySQL
+      service: name=mysql state=restarted
