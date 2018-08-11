@@ -5,14 +5,15 @@
     - name: check package is installed or not
       command: "dpkg-query -l apache2"
       register: deb_check
+      ignore_errors: yes
     - name: installing
       apt: name={{ item }} state=present update_cache=yes state=latest
       with_items:
           - apache2
           - apache2-utils
-      when: deb_check.stdout.find('no packages found') != -1
+      when: deb_check.stdout.find('no packages found matching apache2') != 1
       notify: start_apache2
-  handlers: 
+  handlers:
     - name: start_apache2
       service: name=apache2 state=started
 
@@ -27,7 +28,7 @@
 
     - name: copy files to be hosted
       path: /var/www/html state=directory
-      template: src=/etc/ansible/roles/template/index.html.j2 dest=/var/www/html/index.html.j2
+      template: src=/etc/ansible/roles/LAMP/template/index.html.j2 dest=/var/www/html/index.html.j2
       notify: restart_apache2
 
   handlers:
