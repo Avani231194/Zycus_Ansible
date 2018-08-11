@@ -29,6 +29,7 @@
       command: mysql -u root -e "UPDATE mysql.user SET Password=PASSWORD('password1234') WHERE User='root';";
       args:
         warn: false
+      notify: Restart MySQL
   handlers:
     - name: Restart MySQL
       service: name=mysql state=restarted
