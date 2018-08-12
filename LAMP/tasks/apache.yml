@@ -27,7 +27,7 @@
 
     - name: copy files to be hosted
       path: /var/www/html state=directory
-      template: src=/etc/ansible/roles/LAMP/templates/index.html.j2 dest=/var/www/html/index.html.j2
+      template: src=/etc/ansible/roles/LAMP/templates/index.html.j2 dest=/var/www/html/index.html
       notify: restart_apache2
 
   handlers:
